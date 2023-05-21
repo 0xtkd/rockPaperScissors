@@ -11,33 +11,34 @@
 
 <body>
 
+    <header>
+        <h1>Rock Paper Scissors</h1>
+    </header>
     <main id="main-section">
-        <header>
-            <h1>Rock Paper Scissors</h1>
-        </header>
-
         <section id="game-container">
             <div class="header">
                 <div class="scores">
                     <h2>Scores</h2>
-                    <div class="player-scores">
-                        <p class="player">Player <span>0</span></p>           
-                        <p class="computer"><span>0</span> Computer</p>
+                    <div class="players-scores">
+                        <p class="player">Player : <span>0</span></p> <strong>VS</strong>
+                        <p class="computer"><span>0</span> : Computer</p>
                     </div>
                 </div>
             </div>
             <div class="results">
-                <h2>Tied</h2>
+                <h6>Tied</h6>
+                <div class="summary">
+                    <p>Let's Play</p>
+                </div>
             </div>
             <div class="game-assets">
-                <div class="rock">Rock</div>
-                <div class="paper">Paper</div>
-                <div class="scissors">Scissors</div>
+                <input type="button" value="Rock" class="btn rock">
+                <input type="button" value="Paper" class="btn paper">
+                <input type="button" value="Scissors" class="btn scissors">
+                
             </div>
         </section>
     </main>
-
-    <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script> 
     <script defer src="scripts/index.js"></script>
 </body>
 

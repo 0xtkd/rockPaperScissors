@@ -6,49 +6,77 @@ const getComputerChoice = () => {
     return computerChoice.toLowerCase();
 };
 
-const gameScores = [0, 0];
+let playerScores = 0;
+let computerScores = 0;
+let tiedGame = 0;
+
+let summary = document.querySelector('.summary > p');
+let playerScoresUpdated = document.querySelector('.player > span');
+let computerScoresUpdated = document.querySelector('.computer > span');
+let results = document.querySelector('.results > h6');
 
 const playRound = (playerSelection, computerSelection) => {
 
-  let msg = '';
+    let msg = '';
     if (playerSelection === 'rock' || playerSelection === 'paper' || playerSelection === 'scissors') {
         switch (computerSelection) {
             case 'rock':
                 if (playerSelection === 'rock') {
                     msg = `Game Tied : player choose ${playerSelection} and computer choose ${computerSelection}.`;
+                    summary.innerText = msg;
+                    results.innerText = 'Tied'
+                    tiedGame++;
                 } else if (playerSelection === 'paper') {
                     msg = `Player Win! ${playerSelection} beats ${computerSelection}.`;
-                    gameScores[1] += 1;
+                    summary.innerText = msg;
+                    results.innerText = 'Win'
+                    playerScores++;
                 } else {
                     msg = `Player Lose! ${computerSelection} beats ${playerSelection}.`;
-                    gameScores[0] += 1;
+                    summary.innerText = msg;
+                    results.innerText = 'Lose'
+                    computerScores++;
                 }
-            break;
+                break;
             case 'paper':
                 if (playerSelection === 'rock') {
                     msg = `Player Lose! ${computerSelection} beats ${playerSelection}.`;
-                    gameScores[0] += 1;
+                    summary.innerText = msg;
+                    results.innerText = 'Lose'
+                    computerScores++;
                 } else if (playerSelection === 'paper') {
                     msg = `Game Tied : player choose ${playerSelection} and computer choose ${computerSelection}.`;
+                    summary.innerText = msg;
+                    results.innerText = 'Tied'
+                    tiedGame++;
                 } else {
                     msg = `Player Win! ${playerSelection} beats ${computerSelection}.`;
-                    gameScores[1] += 1;
+                    summary.innerText = msg;
+                    results.innerText = 'Win'
+                    playerScores++;
                 }
-            break;
+                break;
             case 'scissors':
                 if (playerSelection === 'rock') {
                     msg = `Player Win! ${playerSelection} beats ${computerSelection}.`;
-                    gameScores[1] += 1;
+                    summary.innerText = msg;
+                    results.innerText = 'Win'
+                    playerScores++;
                 } else if (playerSelection === 'paper') {
                     msg = `Player Lose! ${computerSelection} beats ${playerSelection}.`;
-                    gameScores[0] += 1;
+                    summary.innerText = msg;
+                    results.innerText = 'Lose'
+                    computerScores++;
                 } else {
                     msg = `Game Tied : player choose ${playerSelection} and computer choose ${computerSelection}.`;
+                    summary.innerText = msg;
+                    results.innerText = 'Tied'
+                    tiedGame++;
                 }
-            break;
+                break;
             default:
                 console.log('Invalid selection.');
-            break;
+                break;
         }
 
         return msg;
@@ -58,24 +86,91 @@ const playRound = (playerSelection, computerSelection) => {
     }
 };
 
+const buttons = document.querySelectorAll('.btn');
 
-function game () {
-    let msg = '';
-    for (let i = 1; i <= 5; i++) {
-        const computerSelection = getComputerChoice();
-        const playerSelection = prompt('Please choose : Rock, Paper or Scissors', 'rock').toLocaleLowerCase();
-        console.log(playRound(playerSelection, computerSelection));
-    }
-    if (gameScores[0] > gameScores[1]) {
-        msg = `Final score Computer win ! score ${gameScores[0]} : ${gameScores[1]}`;
-    } else if (gameScores[0] < gameScores[1]) {
-        msg = `Final score Player win ! score ${gameScores[1]} : ${gameScores[0]}`;
+for (let i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', () => {
+        if (playerScores === 5 || computerScores === 5) {
+            summary.innerText = 'Game Over';
+
+            buttons[0].disabled = true;
+            buttons[1].disabled = true;
+            buttons[2].disabled = true;
+
+            setTimeout(() => {
+                document.getElementById('game-container').classList.add('hide');
+                playAgain();
+            }, 3000);
+
+        } else {
+            let playerSelection = buttons[i].value.toLowerCase();
+            let computerSelection = getComputerChoice();
+            playRound(playerSelection, computerSelection);
+            playerScoresUpdated.innerText = playerScores;
+            computerScoresUpdated.innerText = computerScores;
+        }
+
+    });
+}
+
+// play again functionality
+
+const playAgain = () => {
+    let div = document.createElement('div');
+    div.classList.add('playAgain');
+
+    let h2 = document.createElement('h2');
+    h2.classList.add('h2Result');
+    if (playerScores > computerScores) {
+        h2.innerHTML = `You Won ! ${playerScores} <em>VS</em> ${computerScores}.`;
     } else {
-        msg = `Final score Tied ! score ${gameScores[1]} : ${gameScores[0]}`;
+        h2.innerHTML = `Computer Won ! ${computerScores} <em>VS</em> ${playerScores}.`;
     }
-    return msg;
+
+    div.appendChild(h2);
+
+    let pageRefresh = document.createElement('input');
+    pageRefresh.setAttribute('value', 'Play Again');
+    pageRefresh.setAttribute('type', 'button');
+    pageRefresh.classList.add('pageRefresh');
+
+
+    const tiedGames = document.createElement('p');
+    const wonGames = document.createElement('p');
+    const lossGames = document.createElement('p');
+
+    wonGames.innerText = `Win : ${playerScores}`;
+    lossGames.innerText = `Loss : ${computerScores}`; 
+    tiedGames.innerText = `Tied : ${tiedGame}`;
+
+    const container = document.createElement('div');
+    container.classList.add('container');
+    container.appendChild(tiedGames);
+    container.appendChild(wonGames);
+    container.appendChild(lossGames);
+
+    const title = document.createElement('h4');
+    title.innerText = 'GAME STATS';
+    div.appendChild(title);
+
+    div.appendChild(container);
+
+    div.appendChild(pageRefresh);
+    
+    document.body.appendChild(div);
+
+    let refresh = document.querySelector('.pageRefresh');
+
+    refresh.addEventListener('click', () => {
+        window.location.reload(true);
+    });
 };
 
-console.log(game());
+// playAgain();
 
 
+//              to do list
+// send a message about the game Ex : Win, Loss, Tie
+// under that a small message giving the user a
+// detailed message about the game with
+// player choice and computer choice etc 
