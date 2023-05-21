@@ -165,12 +165,3 @@ const playAgain = () => {
         window.location.reload(true);
     });
 };
-
-// playAgain();
-
-
-//              to do list
-// send a message about the game Ex : Win, Loss, Tie
-// under that a small message giving the user a
-// detailed message about the game with
-// player choice and computer choice etc 
