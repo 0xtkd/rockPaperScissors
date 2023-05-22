@@ -90,7 +90,15 @@ const buttons = document.querySelectorAll('.btn');
 
 for (let i = 0; i < buttons.length; i++) {
     buttons[i].addEventListener('click', () => {
-        if (playerScores === 5 || computerScores === 5) {
+        
+        let playerSelection = buttons[i].value.toLowerCase();
+        let computerSelection = getComputerChoice();
+        playRound(playerSelection, computerSelection);
+        playerScoresUpdated.innerText = playerScores;
+        computerScoresUpdated.innerText = computerScores;
+
+        if (playerScores >= 5 || computerScores >= 5) {
+
             summary.innerText = 'Game Over';
 
             buttons[0].disabled = true;
@@ -101,13 +109,6 @@ for (let i = 0; i < buttons.length; i++) {
                 document.getElementById('game-container').classList.add('hide');
                 playAgain();
             }, 3000);
-
-        } else {
-            let playerSelection = buttons[i].value.toLowerCase();
-            let computerSelection = getComputerChoice();
-            playRound(playerSelection, computerSelection);
-            playerScoresUpdated.innerText = playerScores;
-            computerScoresUpdated.innerText = computerScores;
         }
 
     });
@@ -140,7 +141,7 @@ const playAgain = () => {
     const lossGames = document.createElement('p');
 
     wonGames.innerText = `Win : ${playerScores}`;
-    lossGames.innerText = `Loss : ${computerScores}`; 
+    lossGames.innerText = `Loss : ${computerScores}`;
     tiedGames.innerText = `Tied : ${tiedGame}`;
 
     const container = document.createElement('div');
@@ -156,7 +157,7 @@ const playAgain = () => {
     div.appendChild(container);
 
     div.appendChild(pageRefresh);
-    
+
     document.body.appendChild(div);
 
     let refresh = document.querySelector('.pageRefresh');
